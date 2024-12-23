@@ -1,12 +1,10 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import useStore from "./store/store";
+import NoteItem from "./NoteItem";
 
 const NoteList = () => {
-  const { notes, courses } = useStore();
+  const { notes, courses, fetchNotes, CHARACTER_LIMIT, NEWLINE_LIMIT } = useStore();
   const [selectedCourse, setSelectedCourse] = useState(null);
-  const [expandedNotes, setExpandedNotes] = useState({});
-
-  const CHARACTER_LIMIT = 500;
 
   const filteredNotes = selectedCourse
     ? notes.filter((note) => note.course.id === selectedCourse.id)
@@ -39,39 +37,19 @@ const NoteList = () => {
       ) : (
         <ul className="space-y-4">
           {filteredNotes.map((note) => {
-            const isExpanded = expandedNotes[note.id];
-            const showToggle = note.text.length > CHARACTER_LIMIT;
+            const countNewlines = (text) => (text.match(/\n/g) || []).length;
+            const showToggle =
+              note.text.length > CHARACTER_LIMIT ||
+              countNewlines(note.text) > NEWLINE_LIMIT;
 
             return (
-              <li key={note.id} className="bg-gray-800 p-4 rounded-md text-wrap break-words">
-                <p className="mb-2">
-                  {/* Limits note text length if not expanded */}
-                  {isExpanded || !showToggle
-                    ? note.text
-                    : `${note.text.slice(0, CHARACTER_LIMIT)}...`}
-                </p>
-
-                <div className="flex justify-between items-center">
-                  <small>
-                    {note.course.name} (ID: {note.course.id}) -{" "}
-                    {new Date(note.timestamp).toLocaleString()}
-                  </small>
-
-                  {showToggle && (
-                    <button
-                      onClick={() =>
-                        setExpandedNotes((prev) => ({
-                          ...prev,
-                          [note.id]: !isExpanded,
-                        }))
-                      }
-                      className="text-blue-500 hover:underline text-sm"
-                    >
-                      {isExpanded ? "Näytä vähemmän ↑" : "Näytä enemmän ↓"}
-                    </button>
-                  )}
-                </div>
-              </li>
+              <NoteItem
+                key={note.id}
+                note={note}
+                showToggle={showToggle}
+                addTimestamp={true}
+                addDelete={true}
+              />
             );
           })}
         </ul>

@@ -1,15 +1,21 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import useStore from "./store/store";
+import NoteItem from "./NoteItem";
 
 const NoteTaking = () => {
   const {
     courses,
     notes,
+    CHARACTER_LIMIT,
+    NEWLINE_LIMIT,
     sessionNotes,
     currentCourse,
     setCurrentCourse,
     addNote,
     resetSession,
+    countNewlines,
+    fetchCourses,
+    fetchNotes,
   } = useStore();
   const [noteText, setNoteText] = useState("");
 
@@ -31,6 +37,10 @@ const NoteTaking = () => {
     resetSession();
     setNoteText(""); // Reset note text
   };
+
+  useEffect(() => {
+    resetSession();
+  }, [resetSession]);
 
   return (
     <div className="p-4">
@@ -82,13 +92,25 @@ const NoteTaking = () => {
       )}
 
       {/* Display session notes */}
-      {sessionNotes.length > 0 && (
-        <div className="mt-4">
-          <h3 className="text-lg font-semibold">Session Notes</h3>
-          <ul>
-            {sessionNotes.map((note) => (
-              <li key={note.id}>{note.text}</li>
-            ))}
+      {currentCourse && (
+        <div>
+          <h3 className="text-lg font-bold mt-4">Current Session Notes</h3>
+          <ul className="space-y-4">
+            {sessionNotes.map((note) => {
+              const showToggle =
+                note.text.length > CHARACTER_LIMIT ||
+                countNewlines(note.text) > NEWLINE_LIMIT;
+
+              return (
+                <NoteItem
+                  key={note.id}
+                  note={note}
+                  showToggle={showToggle}
+                  addTimestamp={false}
+                  addDelete={false}
+                />
+              );
+            })}
           </ul>
         </div>
       )}
