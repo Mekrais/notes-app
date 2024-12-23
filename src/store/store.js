@@ -1,8 +1,9 @@
 import { create } from "zustand";
 
-const useStore = create((set) => ({
+const useStore = create((set, get) => ({
   courses: [],
   notes: [],
+  sessionNotes: [],
   currentCourse: null,
 
   setCourses: (courses) => set({ courses }),
@@ -11,7 +12,12 @@ const useStore = create((set) => ({
 
   addCourse: (newCourse) =>
     set((state) => ({ courses: [...state.courses, newCourse] })),
-  addNote: (newNote) => set((state) => ({ notes: [...state.notes, newNote] })),
+  addNote: (newNote) =>
+    set((state) => ({
+      notes: [...state.notes, newNote],
+      sessionNotes: [...state.sessionNotes, newNote],
+    })),
+  resetSession: () => set({ currentCourse: null, sessionNotes: [] }),
   deleteNote: (id) =>
     set((state) => ({ notes: state.notes.filter((n) => n.id !== id) })),
 
@@ -21,16 +27,29 @@ const useStore = create((set) => ({
         "https://luentomuistiinpano-api.netlify.app/.netlify/functions/courses"
       );
       const data = await response.json();
-      set({ courses: data });
+      set((state) => {
+        const newCourses = data.filter(
+          (newCourse) =>
+            !state.courses.some(
+              (existingCourse) => existingCourse.id === newCourse.id
+            )
+        );
+        return { courses: [...state.courses, ...newCourses] };
+      });
     } catch (error) {
       console.error("Failed to fetch courses:", error);
     }
   },
   fetchNotes: async () => {
-    const response = await fetch(
-      "https://luentomuistiinpano-api.netlify.app/.netlify/functions/notes"
-    );
-    set({ notes: await response.json() });
+    try {
+      const response = await fetch(
+        "https://luentomuistiinpano-api.netlify.app/.netlify/functions/notes"
+      );
+      const data = await response.json();
+      set({ notes: data });
+    } catch (error) {
+      console.error("Failed to fetch notes:", error);
+    }
   },
 }));
 

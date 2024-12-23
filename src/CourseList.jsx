@@ -1,13 +1,7 @@
-import { useEffect } from "react";
 import useStore from "./store/store";
 
 const CourseList = () => {
-  const { courses, setCourses, setCurrentCourse } = useStore()
-  const fetchCourses = useStore((state) => state.fetchCourses);
-
-  useEffect(() => {
-    fetchCourses();
-  }, [fetchCourses]);
+  const { courses, setCurrentCourse } = useStore()
 
   return (
     <div>
