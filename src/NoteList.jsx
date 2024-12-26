@@ -3,7 +3,8 @@ import useStore from "./store/store";
 import NoteItem from "./NoteItem";
 
 const NoteList = () => {
-  const { notes, courses, fetchNotes, CHARACTER_LIMIT, NEWLINE_LIMIT } = useStore();
+  const { notes, courses, fetchNotes, CHARACTER_LIMIT, NEWLINE_LIMIT } =
+    useStore();
   const [selectedCourse, setSelectedCourse] = useState(null);
 
   const filteredNotes = selectedCourse
@@ -11,29 +12,35 @@ const NoteList = () => {
     : notes;
 
   return (
-    <div className="p-4">
-      <h2 className="text-xl font-bold mb-2">Kaikki Muistiinpanot</h2>
+    <div className="mt-20 p-6 max-w-4xl mx-auto bg-gray-900 text-white rounded-lg shadow-lg">
+      <h2 className="text-3xl font-bold mb-6 text-center">
+        Kaikki Muistiinpanot
+      </h2>
 
-      {/* Dropdown for filtering by course */}
-      <select
-        onChange={(e) =>
-          setSelectedCourse(
-            courses.find((c) => c.id === parseInt(e.target.value)) || null
-          )
-        }
-        className="border p-2 rounded-md mb-4 text-black"
-      >
-        <option value="">Kaikki kurssit</option>
-        {courses.map((course) => (
-          <option key={course.id} value={course.id}>
-            {course.name}
-          </option>
-        ))}
-      </select>
+      {/* Filtering Dropdown */}
+      <div className="mb-6">
+        <label className="block text-gray-300 mb-2 text-lg font-medium">
+          Suodata Kurssin Mukaan:
+        </label>
+        <select
+          onChange={(e) =>
+            setSelectedCourse(
+              courses.find((c) => c.id === parseInt(e.target.value)) || null
+            )
+          }
+          className="w-full border border-gray-700 bg-gray-800 text-white p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <option value="">Kaikki Kurssit</option>
+          {courses.map((course) => (
+            <option key={course.id} value={course.id}>
+              {course.name}
+            </option>
+          ))}
+        </select>
+      </div>
 
       {/* Display filtered notes */}
       {filteredNotes.length === 0 ? (
-        <p>Ei muistiinpanoja!</p>
+        <p className="text-gray-400 text-center">Ei muistiinpanoja!</p>
       ) : (
         <ul className="space-y-4">
           {filteredNotes.map((note) => {

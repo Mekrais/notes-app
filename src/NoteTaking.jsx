@@ -30,12 +30,12 @@ const NoteTaking = () => {
     };
 
     addNote(newNote);
-    setNoteText(""); // Clear input
+    setNoteText("");
   };
 
   const startNewSession = () => {
     resetSession();
-    setNoteText(""); // Reset note text
+    setNoteText("");
   };
 
   useEffect(() => {
@@ -43,32 +43,45 @@ const NoteTaking = () => {
   }, [resetSession]);
 
   return (
-    <div className="p-4">
-      <h2 className="text-xl font-bold mb-2">Take Notes</h2>
+    <div className="mt-20 p-6 max-w-4xl mx-auto bg-gray-900 text-white rounded-lg shadow-lg">
+      <h2 className="text-3xl font-bold mb-6 text-center">
+        Tee Muistiinpanoja
+      </h2>
 
       {/* Dropdown for selecting course */}
       {!currentCourse && (
-        <select
-          onChange={(e) =>
-            setCurrentCourse(courses.find((c) => c.id === parseInt(e.target.value)))
-          }
-          className="border p-2 rounded-md mb-4 text-black"
-        >
-          <option value="">Select a Course</option>
-          {courses.map((course) => (
-            <option key={course.id} value={course.id}>
-              {course.name}
-            </option>
-          ))}
-        </select>
+        <div className="mb-6">
+          <label className="block text-gray-300 mb-2 text-lg font-medium">
+            Valitse Kurssi:
+          </label>
+          <select
+            onChange={(e) =>
+              setCurrentCourse(
+                courses.find((c) => c.id === parseInt(e.target.value))
+              )
+            }
+            className="w-full border border-gray-700 bg-gray-800 text-white p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="">Valitse Kurssi</option>
+            {courses.map((course) => (
+              <option key={course.id} value={course.id}>
+                {course.name}
+              </option>
+            ))}
+          </select>
+        </div>
       )}
 
       {/* Show current course */}
       {currentCourse && (
-        <div>
-          <p>Current Course: {currentCourse.name}</p>
-          <button onClick={startNewSession} className="text-blue-500">
-            Start New Session
+        <div className="mb-6">
+          <p className="text-lg">
+            <span className="font-bold text-blue-400">Valittu Kurssi:</span>{" "}
+            {currentCourse.name}
+          </p>
+          <button
+            onClick={startNewSession}
+            className="mt-2 text-blue-500 hover:underline">
+            Uusi Sessio
           </button>
         </div>
       )}
@@ -77,41 +90,33 @@ const NoteTaking = () => {
       {currentCourse && (
         <>
           <textarea
-            placeholder="Write your note here..."
+            placeholder="Kirjoita muistiinpanoja..."
             value={noteText}
             onChange={(e) => setNoteText(e.target.value)}
-            className="w-full border p-2 rounded-md mb-4 text-black"
-          ></textarea>
+            className="w-full border border-gray-700 bg-gray-800 text-white p-3 rounded-lg mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
           <button
             onClick={handleAddNote}
-            className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
-          >
-            Add Note
+            className="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition">
+            Lisää Muistiinpano
           </button>
         </>
       )}
 
-      {/* Display session notes */}
+      {/* Scrollable notes section */}
       {currentCourse && (
-        <div>
-          <h3 className="text-lg font-bold mt-4">Current Session Notes</h3>
-          <ul className="space-y-4">
-            {sessionNotes.map((note) => {
-              const showToggle =
-                note.text.length > CHARACTER_LIMIT ||
-                countNewlines(note.text) > NEWLINE_LIMIT;
-
-              return (
-                <NoteItem
-                  key={note.id}
-                  note={note}
-                  showToggle={showToggle}
-                  addTimestamp={false}
-                  addDelete={false}
-                />
-              );
-            })}
-          </ul>
+        <div className="mt-8 overflow-y-auto max-h-[50vh]">
+          <h3 className="text-xl font-bold mb-4 text-blue-400">
+            Session Muistiinpanot
+          </h3>
+          {sessionNotes.length === 0 ? (
+            <p className="text-gray-400 text-center">Ei muistiinpanoja!</p>
+          ) : (
+            <ul className="space-y-4">
+              {sessionNotes.map((note) => (
+                <NoteItem key={note.id} note={note} />
+              ))}
+            </ul>
+          )}
         </div>
       )}
     </div>

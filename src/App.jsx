@@ -1,27 +1,29 @@
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useLocation } from "react-router-dom";
 import CourseList from "./CourseList";
 import AddCourse from "./AddCourse";
-import Navbar from './Navbar';
+import Navbar from "./Navbar";
 import NoteTaking from "./NoteTaking";
 import NoteList from "./NoteList";
-import AppWrapper from './AppWrapper';
+import AppWrapper from "./AppWrapper";
+import Home from "./homePage";
 
 function App() {
+  const location = useLocation();
+
   return (
     <div>
-      <Navbar />
-      <div className="p-4">
-        <Routes>
-          <Route element={<AppWrapper />}>
-            <Route path="/" element={<CourseList />} />
-            <Route path="/add-course" element={<AddCourse />} />
-            <Route path="/notes" element={<NoteTaking />} />
-            <Route path="/all-notes" element={<NoteList />} />
-          </Route>
-        </Routes>
-      </div>
+      {location.pathname !== "/" && <Navbar />}
+      <Routes>
+        <Route element={<AppWrapper />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/take-notes" element={<NoteTaking />} />
+          <Route path="/all-notes" element={<NoteList />} />
+          <Route path="/add-course" element={<AddCourse />} />
+        </Route>
+      </Routes>
+      {/* </div> */}
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
