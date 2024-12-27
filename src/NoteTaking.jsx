@@ -6,16 +6,11 @@ const NoteTaking = () => {
   const {
     courses,
     notes,
-    CHARACTER_LIMIT,
-    NEWLINE_LIMIT,
     sessionNotes,
     currentCourse,
     setCurrentCourse,
     addNote,
     resetSession,
-    countNewlines,
-    fetchCourses,
-    fetchNotes,
   } = useStore();
   const [noteText, setNoteText] = useState("");
 

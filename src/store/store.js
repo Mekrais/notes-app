@@ -59,8 +59,6 @@ const useStore = create((set, get) => ({
     }
   },
 
-  countNewlines: (text) => (text.match(/\n/g) || []).length,
-
   truncateText: (text, CHARACTER_LIMIT, NEWLINE_LIMIT) => {
     const newlines = text.split("\n");
     const newlineCount = newlines.length - 1;
