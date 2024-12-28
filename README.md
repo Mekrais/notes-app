@@ -1,12 +1,13 @@
 # Muistiinpanosovellus
 
-Tämä on muistiinpanosovellus, jonka avulla käyttäjä voi hallita kurssikohtaisia muistiinpanoja. Sovellus tarjoaa mahdollisuuden lisätä, poistaa ja tarkastella muistiinpanoja.
+Tämä on muistiinpanosovellus, jonka avulla käyttäjä voi hallita kurssikohtaisia muistiinpanoja. Sovellus tarjoaa mahdollisuuden lisätä, poistaa ja tarkastella muistiinpanoja, ja lisäämään uusia kursseja.
 
 ## Ohjelman toiminta
 
 - Käyttäjä voi valita kurssin ja lisätä siihen liittyviä muistiinpanoja.
 - Istuntokohtaiset muistiinpanot näkyvät erikseen ja tyhjentyvät aina, kun aloitetaan uusi istunto.
 - Muistiinpanoja voi poistaa yksitellen.
+- Uusia opintojaksoja pystyy lisäämään.
 - Sovellus käyttää **Zustand**-kirjastoa tilanhallintaan ja **Reactia** käyttöliittymän toteuttamiseen.
 
 ## Kehitysversion käynnistäminen
@@ -17,7 +18,7 @@ Tämä on muistiinpanosovellus, jonka avulla käyttäjä voi hallita kurssikohta
    - npm install
 
 2. **Käynnistä kehityspalvelin**
-   Aja seuraava komento:
+   Aja komento:
 
    - npm run dev
 
@@ -31,7 +32,7 @@ Sovellus on kehitetty ja testattu NodeJS-versiolla 23.4.0
 
 ## Keinoälyn käyttö projektissa
 
-Projektin aikana käytettiin keinoälyä seuraavilla tavoilla:
+Projektin aikana käytettiin keinoälyä muunmuassa seuraavilla tavoilla:
 
 - **Suunnittelu:** Hyödynsin keinoälyä ehdotusten saamisessa sovelluksen rakenteesta ja ominaisuuksien toteutuksesta.
 - **Koodi:** Käytin keinoälyä apuna koodin kirjoittamisessa, erityisesti komponenttien uudelleenjärjestämisessä, tilanhallinnan suunnittelussa ja käyttöliittymän optimoinnissa.
