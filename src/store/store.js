@@ -33,15 +33,16 @@ const useStore = create((set, get) => ({
         "https://luentomuistiinpano-api.netlify.app/.netlify/functions/courses"
       );
       const data = await response.json();
-      set((state) => {
-        const newCourses = data.filter(
-          (newCourse) =>
-            !state.courses.some(
-              (existingCourse) => existingCourse.id === newCourse.id
-            )
-        );
-        return { courses: [...state.courses, ...newCourses] };
-      });
+
+      // Append only new courses to the existing list
+      set((state) => ({
+        courses: [
+          ...state.courses,
+          ...data.filter(
+            (course) => !state.courses.some((n) => n.id === course.id)
+          ),
+        ],
+      }));
     } catch (error) {
       console.error("Failed to fetch courses:", error);
     }
@@ -53,7 +54,12 @@ const useStore = create((set, get) => ({
         "https://luentomuistiinpano-api.netlify.app/.netlify/functions/notes"
       );
       const data = await response.json();
-      set({ notes: data });
+      set((state) => ({
+        notes: [
+          ...state.notes,
+          ...data.filter((note) => !state.notes.some((n) => n.id === note.id)),
+        ],
+      }));
     } catch (error) {
       console.error("Failed to fetch notes:", error);
     }
