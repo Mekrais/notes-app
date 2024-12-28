@@ -12,18 +12,22 @@ Tämä on muistiinpanosovellus, jonka avulla käyttäjä voi hallita kurssikohta
 
 ## Kehitysversion käynnistäminen
 
-1. **Asennus:**
+1. **Asennus**
+
    Lataa riippuvuudet suorittamalla seuraava komento projektin juurikansiossa:
 
    - npm install
 
 2. **Käynnistä kehityspalvelin**
+
    Aja komento:
 
    - npm run dev
 
 3. **Käyttö**
+
    Avaa selain ja siirry osoitteeseen:
+
    - http://localhost:5173
 
 ### NodeJS-versio
