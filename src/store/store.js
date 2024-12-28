@@ -5,6 +5,7 @@ const useStore = create((set, get) => ({
   notes: [],
   sessionNotes: [],
   currentCourse: null,
+  loaded: false,
 
   CHARACTER_LIMIT: 500,
   NEWLINE_LIMIT: 2,
@@ -49,6 +50,9 @@ const useStore = create((set, get) => ({
   },
 
   fetchNotes: async () => {
+    const { loaded } = get();
+    if (loaded) return;
+
     try {
       const response = await fetch(
         "https://luentomuistiinpano-api.netlify.app/.netlify/functions/notes"
@@ -59,6 +63,7 @@ const useStore = create((set, get) => ({
           ...state.notes,
           ...data.filter((note) => !state.notes.some((n) => n.id === note.id)),
         ],
+        loaded: true,
       }));
     } catch (error) {
       console.error("Failed to fetch notes:", error);

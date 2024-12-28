@@ -3,8 +3,7 @@ import useStore from "./store/store";
 import NoteItem from "./NoteItem";
 
 const NoteList = () => {
-  const { notes, courses, fetchNotes, CHARACTER_LIMIT, NEWLINE_LIMIT } =
-    useStore();
+  const { notes, courses, CHARACTER_LIMIT, NEWLINE_LIMIT } = useStore();
   const [selectedCourse, setSelectedCourse] = useState(null);
 
   const filteredNotes = selectedCourse

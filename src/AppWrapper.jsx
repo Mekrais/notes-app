@@ -8,7 +8,7 @@ const AppWrapper = () => {
   useEffect(() => {
     fetchCourses();
     fetchNotes();
-  }, [fetchCourses]);
+  }, []);
 
   return (
     <div>
